@@ -1,13 +1,18 @@
 #!/bin/bash
 
-IP1=$(getent hosts instance-1 | awk '{print $1}')
-IP2=$(getent hosts instance-2 | awk '{print $1}')
-IP3=$(getent hosts instance-3 | awk '{print $1}')
+IP1=$(getent hosts node-1 | awk '{print $1}')
+IP2=$(getent hosts node-2 | awk '{print $1}')
+IP3=$(getent hosts node-3 | awk '{print $1}')
 export IP1 IP2 IP3
-export REMOTE_MOUNT="/srv/docker/data"
+export REMOTE_MOUNT="/opt/docker/data"
 
-cd /srv/docker/swarm-cluster-example
-docker stack deploy -c traefik/stack.yaml traefik
-docker stack deploy -c portainer/stack.yaml portainer
-docker stack deploy -c consul-cluster/stack.yaml consul-cluster
-docker stack deploy -c comptador/stack.yaml comptador
+cd /opt/docker/swarm-cluster-example
+docker stack deploy -c traefik/docker-compose.yml traefik
+
+
+docker stack deploy -c portainer/docker-compose.yml portainer
+docker stack deploy -c consul-cluster/docker-compose.yml consul-cluster
+docker stack deploy -c comptador/docker-compose.yml comptador
+
+mkdir -p /opt/docker/wordpress/volumes/database
+docker stack deploy -c wordpress/docker-compose.yml wordpress
