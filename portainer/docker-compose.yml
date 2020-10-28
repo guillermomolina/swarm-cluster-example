@@ -31,8 +31,8 @@ services:
     networks:
      - backend
      - proxy
-    ports:
-     - 9000:9000
+    #ports:
+    # - 9000:9000
     deploy:
       labels:
         traefik.port: 9000

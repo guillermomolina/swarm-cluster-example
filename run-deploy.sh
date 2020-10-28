@@ -41,3 +41,7 @@ if [ ! -f /opt/docker/elastic/volumes/logstash/logstash.conf ]; then
     cp ${BASEDIR}/elastic/logstash.conf /opt/docker/elastic/volumes/logstash
 fi
 deploy elastic
+
+create_dir /opt/docker/monitor/volumes/grafana
+create_dir /opt/docker/monitor/volumes/influxdb
+deploy monitor

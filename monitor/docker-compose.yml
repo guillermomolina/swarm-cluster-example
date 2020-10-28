@@ -2,14 +2,19 @@ version: '3.7'
 services:
   grafana:
     image: grafana/grafana:4.5.2
-    ports:
-      - 3000:3000
+    #ports:
+    #  - 3000:3000
     volumes:
-      - /data/grafana:/var/lib/grafana
+      - /opt/docker/monitor/volumes/grafana:/var/lib/grafana
     deploy:
       placement:
         constraints:
           - node.labels.grafana == true
+    deploy:
+      labels:
+        traefik.port: 3000
+        traefik.frontend.rule: "Host: grafana.${IP1}.nip.io,grafana.${IP2}.nip.io,grafana.${IP3}.nip.io"
+        traefik.docker.network: proxy
   
   influxdb:
     image: influxdb:1.3.5-alpine
@@ -17,7 +22,7 @@ services:
       - source: influxdb.conf
         target: /etc/influxdb/influxdb.conf
     volumes:
-      - /data/influxdb:/var/lib/influxdb
+      - /opt/docker/monitor/volumes/influxdb:/var/lib/influxdb
     deploy:
       placement:
         constraints:
