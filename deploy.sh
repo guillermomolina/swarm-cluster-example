@@ -19,5 +19,7 @@ if [ $# -eq 1 ]; then
     else
         deploy_stack $1
     fi
+else
+    echo "Enter stack name (or all)"
 fi
 
