@@ -6,10 +6,8 @@ deploy_stack {
     if [ -x ${BASEDIR}/$1/deploy.sh ]; then
         . ${BASEDIR}/$1/deploy.sh
         echo "Deployed stack $1"
-        return 0
     else
         echo "Unknown stack $1"
-        return 1
     fi    
 }
 
