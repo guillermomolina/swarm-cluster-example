@@ -13,7 +13,7 @@ mount -a
 
 docker swarm init 
 docker swarm join-token manager|grep join  > /opt/docker/join.sh
-chmod +x $!
+chmod +x /opt/docker/join.sh 
 
 docker network create proxy -d overlay
 #docker network create portainer_agent -d overlay
