@@ -78,3 +78,7 @@ networks:
     driver: 'overlay'
   proxy:
     external: true
+
+configs:
+  logstash:
+    file: ./logstash.conf

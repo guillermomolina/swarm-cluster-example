@@ -23,10 +23,6 @@ services:
         target: /etc/influxdb/influxdb.conf
     volumes:
       - /opt/docker/monitor/volumes/influxdb:/var/lib/influxdb
-    deploy:
-      placement:
-        constraints:
-          - node.labels.influxdb == true
     environment:
       - INFLUXDB_DB=telegraf
       - INFLUXDB_USER=telegraf
