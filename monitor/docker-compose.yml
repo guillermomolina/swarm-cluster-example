@@ -2,6 +2,9 @@ version: '3.7'
 services:
   grafana:
     image: grafana/grafana:4.5.2
+    networks:
+     - monitoring
+     - proxy
     #ports:
     #  - 3000:3000
     volumes:
@@ -19,6 +22,8 @@ services:
         target: /etc/influxdb/influxdb.conf
     volumes:
       - /opt/docker/monitor/volumes/influxdb:/var/lib/influxdb
+    networks:
+     - monitoring
     environment:
       - INFLUXDB_DB=telegraf
       - INFLUXDB_USER=telegraf
@@ -35,11 +40,15 @@ services:
     configs:
       - source: telegraf
         target: /etc/telegraf/telegraf.conf
+    networks:
+     - monitoring
     deploy:
       mode: global
 
 networks:
   monitoring:
+  proxy: 
+    external: true
 
 configs:
   telegraf:
