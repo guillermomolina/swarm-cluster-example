@@ -2,7 +2,7 @@
 
 BASEDIR=$(dirname $0)
 
-deploy_stack {
+function deploy_stack {
     if [ -x ${BASEDIR}/$1/deploy.sh ]; then
         ${BASEDIR}/$1/deploy.sh
         echo "Deployed stack $1"
