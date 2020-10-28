@@ -8,7 +8,7 @@ sudo -i
 apt install git
 git clone https://github.com/guillermomolina/swarm-cluster-example
 cd swarm-cluster-example
-./run-master.sh
+./setup_master.sh
 ```
 
 ## Slave nodes (instance-2 and instance-3)
@@ -17,5 +17,10 @@ sudo -i
 apt install git
 git clone https://github.com/guillermomolina/swarm-cluster-example
 cd swarm-cluster-example
-./run-worker.sh
+./setup_worker.sh
+```
+
+## Deploy stacks
+```bash
+./deploy.sh all
 ```

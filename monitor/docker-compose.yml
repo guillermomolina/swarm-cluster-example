@@ -37,8 +37,17 @@ services:
   telegraf:
     image: telegraf
     hostname: "{{.Node.Hostname}}"
+    environment:
+      HOST_PROC: /rootfs/proc
+      HOST_SYS: /rootfs/sys
+      HOST_ETC: /rootfs/etc
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /sys:/rootfs/sys:ro
+      - /proc:/rootfs/proc:ro
+      - /run:/rootfs/run:ro
+      - /etc:/rootfs/etc:ro
+      - /etc/telegraf:/etc/telegraf
     configs:
       - source: telegraf
         target: /etc/telegraf/telegraf.conf
