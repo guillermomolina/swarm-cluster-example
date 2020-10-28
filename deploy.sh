@@ -4,7 +4,7 @@ BASEDIR=$(dirname $0)
 
 deploy_stack {
     if [ -x ${BASEDIR}/$1/deploy.sh ]; then
-        . ${BASEDIR}/$1/deploy.sh
+        ${BASEDIR}/$1/deploy.sh
         echo "Deployed stack $1"
     else
         echo "Unknown stack $1"
