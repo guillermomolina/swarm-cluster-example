@@ -35,8 +35,8 @@ deploy wordpress
 
 create_dir /opt/docker/elastic/volumes/elasticsearch
 chmod 177 /opt/docker/elastic/volumes/elasticsearch
-create_dir /opt/docker/elastic/volumes/logstash/config
-if [ ! -f /opt/docker/elastic/volumes/logstash/config/logstash.conf ]; then
-    cp ${BASEDIR}/elastic/logstash.conf /opt/docker/elastic/volumes/logstash/config
+create_dir /opt/docker/elastic/volumes/logstash
+if [ ! -f /opt/docker/elastic/volumes/logstash/logstash.conf ]; then
+    cp ${BASEDIR}/elastic/logstash.conf /opt/docker/elastic/volumes/logstash
 fi
 deploy elastic
