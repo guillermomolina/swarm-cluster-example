@@ -27,8 +27,9 @@ services:
 
   logstash:
     image: docker.elastic.co/logstash/logstash-oss:7.5.2
-    volumes:
-      - /opt/docker/elastic/volumes/logstash:/usr/share/logstash/pipeline/
+    configs:
+      - source: logstash
+        target: /usr/share/logstash/pipeline/logstash.conf
     depends_on:
       - elasticsearch
     networks:
