@@ -54,7 +54,7 @@ services:
     deploy:
       labels:
         traefik.port: 80
-        traefik.frontend.rule: "Host: wordpress.35.246.71.61.nip.io,wordpress.34.105.253.107.nip.io,wordpress.35.242.172.150.nip.io"
+        traefik.frontend.rule: "Host: wordpress.${IP1}.nip.io,wordpress.${IP2}.nip.io,wordpress.${IP3}.nip.io"
         traefik.docker.network: proxy
        
 networks:

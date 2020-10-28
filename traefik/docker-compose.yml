@@ -24,7 +24,7 @@ services:
         condition: on-failure
       labels:
         traefik.port: 8080
-        traefik.frontend.rule: "Host: traefik.35.246.71.61.nip.io,traefik.34.105.253.107.nip.io,traefik.35.242.172.150.nip.io"
+        traefik.frontend.rule: "Host: traefik.${IP1}.nip.io,traefik.${IP2}.nip.io,traefik.${IP3}.nip.io"
         traefik.docker.network: proxy
 
 
