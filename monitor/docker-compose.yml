@@ -7,10 +7,6 @@ services:
     volumes:
       - /opt/docker/monitor/volumes/grafana:/var/lib/grafana
     deploy:
-      placement:
-        constraints:
-          - node.labels.grafana == true
-    deploy:
       labels:
         traefik.port: 3000
         traefik.frontend.rule: "Host: grafana.${IP1}.nip.io,grafana.${IP2}.nip.io,grafana.${IP3}.nip.io"
