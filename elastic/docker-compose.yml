@@ -20,6 +20,10 @@ services:
       - /opt/docker/elastic/volumes/elasticsearch:/usr/share/elasticsearch/data
     deploy:
       replicas: 1
+      labels:
+        traefik.port: 9200
+        traefik.frontend.rule: "Host: elastic.${IP1}.nip.io,elastic.${IP2}.nip.io,elastic.${IP3}.nip.io"
+        traefik.docker.network: "proxy"
 
   logstash:
     image: docker.elastic.co/logstash/logstash-oss:7.5.2
@@ -62,7 +66,7 @@ services:
       replicas: 1
       labels:
         traefik.port: 5601
-        traefik.frontend.rule: "Host: elastic.${IP1}.nip.io,elastic.${IP2}.nip.io,elastic.${IP3}.nip.io"
+        traefik.frontend.rule: "Host: kibana.${IP1}.nip.io,kibana.${IP2}.nip.io,kibana.${IP3}.nip.io"
         traefik.docker.network: "proxy"
 
 networks:
