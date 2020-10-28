@@ -3,7 +3,7 @@
 function create_dir {
     if [ ! -d $1 ]; then
         mkdir -p $1
-        chmod 177 $1
+        chmod 1777 $1
     fi 
 }
 
