@@ -22,7 +22,7 @@ services:
       replicas: 1
       labels:
         traefik.port: 9200
-        traefik.frontend.rule: "Host: elastic.${IP1}.nip.io,elastic.${IP2}.nip.io,elastic.${IP3}.nip.io"
+        traefik.frontend.rule: "Host: ${ELASTIC_HOST_LIST}"
         traefik.docker.network: "proxy"
 
   logstash:
@@ -67,7 +67,7 @@ services:
       replicas: 1
       labels:
         traefik.port: 5601
-        traefik.frontend.rule: "Host: kibana.${IP1}.nip.io,kibana.${IP2}.nip.io,kibana.${IP3}.nip.io"
+        traefik.frontend.rule: "Host: ${KIBANA_HOST_LIST}"
         traefik.docker.network: "proxy"
 
 networks:

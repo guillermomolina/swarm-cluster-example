@@ -14,7 +14,7 @@ services:
     deploy:
       labels:
         traefik.port: 3000
-        traefik.frontend.rule: "Host: grafana.${IP1}.nip.io,grafana.${IP2}.nip.io,grafana.${IP3}.nip.io"
+        traefik.frontend.rule: "Host: ${HOST_LIST}"
         traefik.docker.network: proxy
   
   influxdb:

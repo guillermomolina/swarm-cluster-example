@@ -36,7 +36,7 @@ services:
     deploy:
       labels:
         traefik.port: 9000
-        traefik.frontend.rule: "Host: portainer.${IP1}.nip.io,portainer.${IP2}.nip.io,portainer.${IP3}.nip.io"
+        traefik.frontend.rule: "Host: ${HOST_LIST}"
         traefik.docker.network: proxy
       mode: replicated
       replicas: 1
