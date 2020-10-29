@@ -2,42 +2,69 @@ version: '3.7'
 
 services:
   server:
-    image: library/traefik:v2.3
+    image: library/traefik
     command:
-      - "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.myresolver.acme.email=postmaster@${DOMAIN_NAME}"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - '--providers.docker=true'
+      - '--entryPoints.web.address=:80'
+      - '--entryPoints.websecure.address=:443'
+      - '--providers.providersThrottleDuration=2s'
+      - '--providers.docker.watch=true'
+      - '--providers.docker.swarmMode=true'
+      - '--providers.docker.swarmModeRefreshSeconds=15s'
+      - '--providers.docker.exposedbydefault=false'
+      - '--providers.docker.defaultRule=Host(`${DOMAIN_NAME}`)'
+      - '--providers.docker.constraints=Label(`traefik.tags`,`public`)'
+      - '--accessLog.bufferingSize=0'
+      - '--api=true'
+      - '--api.dashboard=true'
+      - '--log.level=DEBUG'
+      - '--certificatesResolvers.letsencrypt.acme.tlsChallenge=true'
+      - '--certificatesResolvers.letsencrypt.acme.httpChallenge=true'
+      - '--certificatesResolvers.letsencrypt.acme.httpchallenge.entrypoint=web'
+      - '--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory'
+      - '--certificatesResolvers.letsencrypt.acme.email=admin@${DOMAIN_NAME}'
+      - '--certificatesResolvers.letsencrypt.acme.storage=/var/lib/traefik/acme.json'
     networks:
       - proxy
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /opt/docker/traefik/volumes/letsencrypt:/letsencrypt
+      - /opt/docker/traefik/volumes/certificates:/var/lib/traefik
+      - /opt/docker/traefik/volumes/configs:/run
     ports:
       - 80:80
       - 443:443
       - 8080:8080
     deploy:
+      placement:
+        constraints:
+          - node.role == manager
       restart_policy:
         condition: on-failure
       labels:
-        traefik.port: 8080
-        traefik.frontend.rule: "Host: ${HOST_LIST}"
-        traefik.docker.network: proxy
+        - 'traefik.enable=true'
+        - 'traefik.tags=public'
+        - 'traefik.docker.network=proxy'
+        - 'traefik.http.routers.traefik-http.rule=Host(`traefik.${DOMAIN_NAME}`)'
+        - 'traefik.http.routers.traefik-http.entrypoints=web'
+        - 'traefik.http.routers.traefik-http.middlewares=traefik-redirect'
+        - 'traefik.http.routers.traefik-https.rule=Host(`traefik.${DOMAIN_NAME}`)'
+        - 'traefik.http.routers.traefik-https.entrypoints=websecure'
+        - 'traefik.http.routers.traefik-https.middlewares=traefik-auth'
+        - 'traefik.http.routers.traefik-https.service=api@internal'
+        - 'traefik.http.services.traefik-https.loadbalancer.server.port=8080'
+        - 'traefik.http.routers.traefik-https.tls=true'
+        - 'traefik.http.routers.traefik-https.tls.certResolver=letsencrypt'
+        - 'traefik.http.routers.traefik-https.tls.domains[0].main=traefik.${DOMAIN_NAME}'
+        - 'traefik.http.middlewares.traefik-auth.basicauth.users=user:hashedpasword'
+        - 'traefik.http.middlewares.traefik-redirect.redirectscheme.scheme=https'
 
   whoami:
-    image: "traefik/whoami"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+    image: traefik/whoami
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.whoami.rule=Host(`whoami.${DOMAIN_NAME}`)
+        - traefik.http.routers.whoami.entrypoints=websecure
+        - traefik.http.routers.whoami.tls.certresolver=myresolver
 
 networks:
   proxy:

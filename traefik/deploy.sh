@@ -35,6 +35,7 @@ export HOST_LIST
 echo "Public DNS list ${HOST_LIST}"
 echo "DNS domain name ${DOMAIN_NAME}" 
 
-create_dir /opt/docker/traefik/volumes/letsencrypt
+create_dir /opt/docker/traefik/volumes/certificates
+create_dir /opt/docker/traefik/volumes/configs
 docker stack deploy -c ${BASEDIR}/docker-compose.yml ${STACK_NAME}
 
