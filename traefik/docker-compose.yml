@@ -43,9 +43,9 @@ services:
         - 'traefik.enable=true'
         - 'traefik.tags=public'
         - 'traefik.docker.network=proxy'
-        - 'traefik.http.routers.traefik-http.rule=Host(`traefik.${DOMAIN_NAME}`)'
+        - 'traefik.http.routers.traefik-http.rule=Host(`$HOST_LIST`)'
         - 'traefik.http.routers.traefik-http.entrypoints=web'
-        - 'traefik.http.routers.traefik-http.middlewares=traefik-redirect'
+        #- 'traefik.http.routers.traefik-http.middlewares=traefik-redirect'
         #- 'traefik.http.routers.traefik-https.rule=Host(`traefik.${DOMAIN_NAME}`)'
         #- 'traefik.http.routers.traefik-https.entrypoints=websecure'
         #- 'traefik.http.routers.traefik-https.middlewares=traefik-auth'
@@ -56,14 +56,6 @@ services:
         #- 'traefik.http.routers.traefik-https.tls.domains[0].main=traefik.${DOMAIN_NAME}'
         #- 'traefik.http.middlewares.traefik-auth.basicauth.users=user:hashedpasword'
         #- 'traefik.http.middlewares.traefik-redirect.redirectscheme.scheme=https'
-
-  whoami:
-    image: "traefik/whoami"
-    container_name: "simple-service"
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.whoami.rule=Host(`$HOST_LIST`)
-      - traefik.http.routers.whoami.entrypoints=web
 
 networks:
   proxy:
