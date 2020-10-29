@@ -2,23 +2,25 @@ version: '3.7'
 
 services:
   server:
-    image: library/traefik:1.7
+    image: library/traefik:v2.3
     command:
-      - "--debug"
-      - "--api"
-      - "--entrypoints=Name:http Address::80"
-      - "--entrypoints=Name:https Address::443 TLS"
-      - "--defaultentrypoints=http,https"
-      - "--docker"
-      - "--docker.swarmmode"
-      - "--docker.watch"
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=postmaster@${DOMAIN_NAME}"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     networks:
       - proxy
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /opt/docker/traefik/volumes/letsencrypt:/letsencrypt
     ports:
       - 80:80
-      - 8443:443
+      - 443:443
       #- 8080:8080
     deploy:
       restart_policy:
@@ -28,6 +30,13 @@ services:
         traefik.frontend.rule: "Host: ${HOST_LIST}"
         traefik.docker.network: proxy
 
+  whoami:
+    image: "traefik/whoami"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
 
 networks:
   proxy:

@@ -34,6 +34,6 @@ HOST_LIST=$(join_by "," ${HOST_NAMES_ARRAY[@]})
 export HOST_LIST
 echo "Public DNS list ${HOST_LIST}"
 
-create_dir /opt/docker/elastic/volumes/elasticsearch
+create_dir /opt/docker/traefik/volumes/letsencrypt
 docker stack deploy -c ${BASEDIR}/docker-compose.yml ${STACK_NAME}
 
