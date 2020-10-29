@@ -5,7 +5,7 @@ To be deployed on 3 [google-cloud](https://console.cloud.google.com/compute/inst
 ## Master node (instance-1)
 ```bash
 sudo -i
-apt install git
+apt install -y git
 git clone https://github.com/guillermomolina/swarm-cluster-example
 cd swarm-cluster-example
 ./setup_master.sh
@@ -14,7 +14,7 @@ cd swarm-cluster-example
 ## Slave nodes (instance-2 and instance-3)
 ```bash
 sudo -i
-apt install git
+apt install -y git
 git clone https://github.com/guillermomolina/swarm-cluster-example
 cd swarm-cluster-example
 ./setup_worker.sh
@@ -22,5 +22,5 @@ cd swarm-cluster-example
 
 ## Deploy stacks
 ```bash
-./deploy.sh all
+./deploy.sh <STACK_NAME|all> [PUBLIC_IP, ...]
 ```

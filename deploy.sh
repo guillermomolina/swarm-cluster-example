@@ -11,13 +11,15 @@ function deploy_stack {
     fi    
 }
 
-if [ $# -eq 1 ]; then
-    if [ $1 == "all" ]; then
-        for STACK in traefik portainer monitor wordpress elastic; do
-            deploy_stack ${STACK}
+if [ $# -ge 1 ]; then
+    STACK=$1
+    shift
+    if [ ${STACK} == "all" ]; then
+        for ${S} in traefik portainer monitor wordpress elastic; do
+            deploy_stack ${S} $*
         done
     else
-        deploy_stack $1
+        deploy_stack ${STACK} $*
     fi
 else
     echo "Enter stack name (or all)"
