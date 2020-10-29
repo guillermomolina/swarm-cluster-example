@@ -17,7 +17,7 @@ if [ $# -ge 1 ]; then
     STACK=$1
     shift
     if [ ${STACK} == "all" ]; then
-        for ${S} in traefik portainer monitor wordpress elastic; do
+        for S in traefik portainer monitor wordpress elastic; do
             deploy_stack ${S} $*
         done
     else
