@@ -60,12 +60,14 @@ services:
 
   whoami:
     image: "traefik/whoami"
+    networks:
+      - proxy
     deploy:
       labels:
-        - traefik.enable=true
-        - traefik.docker.network=proxy
-        - traefik.http.routers.whoami.rule=Host(`traefik.35.228.247.111.nip.io`)
-        - traefik.http.routers.whoami.entrypoints=web
+        - 'traefik.enable=true'
+        - 'traefik.docker.network=proxy'
+        - 'traefik.http.routers.whoami.rule=Host(`traefik.35.228.247.111.nip.io`)'
+        - 'traefik.http.routers.whoami.entrypoints=web'
 
 networks:
   proxy:
