@@ -44,14 +44,15 @@ services:
         constraints: [node.role == manager]
       restart_policy:
         condition: on-failure
-      #labels:
-        #- 'traefik.enable=true'
+      labels:
+        - 'traefik.enable=true'
         #- 'traefik.tags=public'
-        #- 'traefik.docker.network=proxy'
-        #- 'traefik.http.routers.traefik-http.rule=Host($HOST_LIST)'
-        #- 'traefik.http.routers.traefik-http.entrypoints=web'
+        - 'traefik.docker.network=proxy'
+        - 'traefik.http.routers.traefik-http.rule=Host(`$HOST_LIST`)'
+        - 'traefik.http.routers.traefik-http.entrypoints=web'
+        - 'traefik.http.services.traefik-http.loadbalancer.server.port=8080'
+        #- 'traefik.http.routers.traefik-https.rule=Host(`traefik.35.228.247.111.nip.io`)'
         #- 'traefik.http.routers.traefik-http.middlewares=traefik-redirect'
-        #- 'traefik.http.routers.traefik-https.rule=Host(`traefik.${DOMAIN_NAME}`)'
         #- 'traefik.http.routers.traefik-https.entrypoints=websecure'
         #- 'traefik.http.routers.traefik-https.middlewares=traefik-auth'
         #- 'traefik.http.routers.traefik-https.service=api@internal'
@@ -70,7 +71,7 @@ services:
       labels:
         - 'traefik.enable=true'
         - 'traefik.docker.network=proxy'
-        - 'traefik.http.routers.whoami.rule=Host(`traefik.35.228.247.111.nip.io`)'
+        - 'traefik.http.routers.whoami.rule=Host(`whoami.35.228.247.111.nip.io`)'
         - 'traefik.http.routers.whoami.entrypoints=web'
         - 'traefik.http.services.whoami.loadbalancer.server.port=80'
 
