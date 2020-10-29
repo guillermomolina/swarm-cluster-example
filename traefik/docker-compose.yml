@@ -14,7 +14,7 @@ services:
       - '--api.insecure=true'
       - '--providers.docker.exposedbydefault=false'
       #- '--providers.docker.defaultRule=Host(${HOST_LIST})'
-      - '--providers.docker.constraints=Label(`traefik.tags`,`public`)'
+      #- '--providers.docker.constraints=Label(`traefik.tags`,`public`)'
       - '--accessLog.bufferingSize=0'
       - '--api=true'
       - '--api.dashboard=true'
@@ -62,9 +62,10 @@ services:
     image: "traefik/whoami"
     deploy:
       labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.whoami.rule=Host(`traefik.35.228.247.111.nip.io`)"
-        - "traefik.http.routers.whoami.entrypoints=web"
+        - traefik.enable=true
+        - traefik.docker.network=proxy
+        - traefik.http.routers.whoami.rule=Host(`traefik.35.228.247.111.nip.io`)
+        - traefik.http.routers.whoami.entrypoints=web
 
 networks:
   proxy:
