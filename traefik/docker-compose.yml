@@ -4,15 +4,17 @@ services:
   server:
     image: library/traefik
     command:
-      - '--providers.docker=true'
+      - '--api.insecure=true'
       - '--entryPoints.web.address=:80'
       - '--entryPoints.websecure.address=:443'
       - '--providers.providersThrottleDuration=2s'
+      - '--providers.docker=true'
       - '--providers.docker.watch=true'
+      - '--providers.docker.endpoint=unix:///var/run/docker.sock'
       - '--providers.docker.swarmMode=true'
       - '--providers.docker.swarmModeRefreshSeconds=15s'
-      - '--api.insecure=true'
       - '--providers.docker.exposedbydefault=false'
+      - '--providers.docker.network=proxy'
       #- '--providers.docker.defaultRule=Host(${HOST_LIST})'
       #- '--providers.docker.constraints=Label(`traefik.tags`,`public`)'
       - '--accessLog.bufferingSize=0'
@@ -28,6 +30,7 @@ services:
     networks:
       - proxy
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - /opt/docker/traefik/volumes/certificates:/var/lib/traefik
       - /opt/docker/traefik/volumes/configs:/run
     ports:
@@ -58,6 +61,7 @@ services:
         #- 'traefik.http.middlewares.traefik-auth.basicauth.users=user:hashedpasword'
         #- 'traefik.http.middlewares.traefik-redirect.redirectscheme.scheme=https'
 
+# https://blog.creekorful.com/2019/10/how-to-install-traefik-2-docker-swarm/
   whoami:
     image: "traefik/whoami"
     networks:
