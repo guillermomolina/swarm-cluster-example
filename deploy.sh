@@ -3,8 +3,10 @@
 BASEDIR=$(dirname $0)
 
 function deploy_stack {
+    STACK=$1
+    shift   
     if [ -x ${BASEDIR}/$1/deploy.sh ]; then
-        ${BASEDIR}/$1/deploy.sh
+        ${BASEDIR}/$1/deploy.sh $*
         echo "Deployed stack $1"
     else
         echo "Unknown stack $1"
