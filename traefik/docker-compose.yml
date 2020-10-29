@@ -71,7 +71,7 @@ services:
       labels:
         - 'traefik.enable=true'
         - 'traefik.docker.network=proxy'
-        - 'traefik.http.routers.whoami.rule=Host(`whoami.35.228.247.111.nip.io`)'
+        - 'traefik.http.routers.whoami.rule=Host(`$HOST_LIST`)'
         - 'traefik.http.routers.whoami.entrypoints=web'
         - 'traefik.http.services.whoami.loadbalancer.server.port=80'
 

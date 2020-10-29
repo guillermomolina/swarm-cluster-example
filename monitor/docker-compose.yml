@@ -13,9 +13,11 @@ services:
       - /opt/docker/monitor/volumes/grafana:/var/lib/grafana
     deploy:
       labels:
-        traefik.port: 3000
-        traefik.frontend.rule: "Host: ${HOST_LIST}"
-        traefik.docker.network: proxy
+        - 'traefik.enable=true'
+        - 'traefik.docker.network=proxy'
+        - 'traefik.http.routers.monitor.rule=Host(`$HOST_LIST`)'
+        - 'traefik.http.routers.monitor.entrypoints=web'
+        - 'traefik.http.services.monitor.loadbalancer.server.port=3000'
   
   influxdb:
     image: influxdb

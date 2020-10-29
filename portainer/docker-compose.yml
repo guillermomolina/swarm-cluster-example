@@ -35,9 +35,11 @@ services:
     # - 9000:9000
     deploy:
       labels:
-        traefik.port: 9000
-        traefik.frontend.rule: "Host: ${HOST_LIST}"
-        traefik.docker.network: proxy
+        - 'traefik.enable=true'
+        - 'traefik.docker.network=proxy'
+        - 'traefik.http.routers.portainer.rule=Host(`$HOST_LIST`)'
+        - 'traefik.http.routers.portainer.entrypoints=web'
+        - 'traefik.http.services.portainer.loadbalancer.server.port=9000'
       mode: replicated
       replicas: 1
       placement:

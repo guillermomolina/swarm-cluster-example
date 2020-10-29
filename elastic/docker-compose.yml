@@ -21,9 +21,11 @@ services:
     deploy:
       replicas: 1
       labels:
-        traefik.port: 9200
-        traefik.frontend.rule: "Host: ${ELASTIC_HOST_LIST}"
-        traefik.docker.network: "proxy"
+        - 'traefik.enable=true'
+        - 'traefik.docker.network=proxy'
+        - 'traefik.http.routers.elastic.rule=Host(`$ELASTIC_HOST_LIST`)'
+        - 'traefik.http.routers.elastic.entrypoints=web'
+        - 'traefik.http.services.elastic.loadbalancer.server.port=9200'
 
   logstash:
     image: docker.elastic.co/logstash/logstash-oss:7.5.2
@@ -66,9 +68,11 @@ services:
     deploy:
       replicas: 1
       labels:
-        traefik.port: 5601
-        traefik.frontend.rule: "Host: ${KIBANA_HOST_LIST}"
-        traefik.docker.network: "proxy"
+        - 'traefik.enable=true'
+        - 'traefik.docker.network=proxy'
+        - 'traefik.http.routers.kibana.rule=Host(`$KIBANA_HOST_LIST`)'
+        - 'traefik.http.routers.kibana.entrypoints=web'
+        - 'traefik.http.services.kibana.loadbalancer.server.port=5601'
 
 networks:
   default:
