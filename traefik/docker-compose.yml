@@ -12,7 +12,7 @@ services:
       - '--providers.docker.swarmMode=true'
       - '--providers.docker.swarmModeRefreshSeconds=15s'
       - '--providers.docker.exposedbydefault=false'
-      - '--providers.docker.defaultRule=Host(`${HOST_LIST}`)'
+      #- '--providers.docker.defaultRule=Host(`${HOST_LIST}`)'
       - '--providers.docker.constraints=Label(`traefik.tags`,`public`)'
       - '--accessLog.bufferingSize=0'
       - '--api=true'
@@ -56,6 +56,14 @@ services:
         #- 'traefik.http.routers.traefik-https.tls.domains[0].main=traefik.${DOMAIN_NAME}'
         #- 'traefik.http.middlewares.traefik-auth.basicauth.users=user:hashedpasword'
         #- 'traefik.http.middlewares.traefik-redirect.redirectscheme.scheme=https'
+
+  whoami:
+    image: "traefik/whoami"
+    container_name: "simple-service"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.whoami.rule=Host(`$HOST_LIST`)
+      - traefik.http.routers.whoami.entrypoints=web
 
 networks:
   proxy:
